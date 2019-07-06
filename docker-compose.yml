@@ -1,0 +1,50 @@
+version: "3"
+
+services:
+  app:
+    restart: always
+    build: . 
+    command: "gunicorn --timeout=30 --workers=2 --bind 0.0.0.0:8000 edgexWebApp.wsgi:application"
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+
+  db:
+    image: mysql:latest
+    command: mysqld --default-authentication-plugin=mysql_native_password
+    volumes:
+      - "./mysql:/var/lib/mysql"
+    ports:
+      - "3306:3306"
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=12345
+      - MYSQL_DATABASE=django_app
+      - MYSQL_USER=django_app
+      - MYSQL_PASSWORD=12345
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "3000:8000"
+    volumes:
+      - static-volume:/code/static
+      - ./config/nginx:/etc/nginx/conf.d
+    depends_on:
+      - app
+    networks:
+      - web_network
+
+networks:
+  web_network:
+    driver: bridge
+  db_network:
+    driver: bridge
+
+volumes:
+  static-volume:
+
