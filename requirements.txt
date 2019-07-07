@@ -1,4 +1,7 @@
 Django==2.2.2
 mysqlclient
 gunicorn==19.9.0
+django-ckeditor
+pillow
+
 

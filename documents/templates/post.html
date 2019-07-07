@@ -1,0 +1,22 @@
+{% load static %}
+<html>
+    <head>
+        <title>Django Girls blog</title>
+    </head>
+    <body>
+        <div class="page-header">
+            <h1><a href="/">Django Girls Blog</a></h1>
+            
+
+            {{post.title}}
+
+            {{post.slug}}
+
+            {{post.content | safe}}
+       
+       </div>
+
+
+    </body>
+
+</html>

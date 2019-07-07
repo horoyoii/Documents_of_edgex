@@ -31,6 +31,7 @@ urlpatterns = [
     path('index/', index, name='index'),
     path('create/', createPost, name='create'),
     path('ckeditor/', include('ckeditor_uploader.urls')),
+    path('post/<int:pk>', showPost, name='show'),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
