@@ -28,3 +28,16 @@ def showPost(request, pk):
 
 def index(request):
     return render(request, 'index.html')
+
+
+def content_list(request):
+    #post_title = Post.objects.values_list('title', 'id')
+    post_title = Post.objects.all()
+    print(post_title) 
+
+    return render(request, 'content_list.html', {'post_title':post_title})
+
+def content_main(request, pk):
+    post_all = Post.objects.all()
+    post = Post.objects.get(id=pk)
+    return render(request, 'content_main.html', {'post':post, 'post_all': post_all})
