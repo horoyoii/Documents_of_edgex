@@ -17,6 +17,9 @@ from django.contrib import admin
 from django.urls import path
 from documents.views import *
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.conf import settings
+from django.conf.urls.static import static
+from django.conf.urls import include
 
 # ... the rest of your URLconf goes here ...
 
@@ -26,7 +29,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('home/',  home, name='home'),
     path('index/', index, name='index'),
-]
+    path('create/', createPost, name='create'),
+    path('ckeditor/', include('ckeditor_uploader.urls')),
+
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
 
