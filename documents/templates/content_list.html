@@ -24,9 +24,13 @@
 
     <!-- Sidebar -->
     <div class="bg-light border-right" id="sidebar-wrapper">
-      <div class="sidebar-heading">Start Bootstrap </div>
+      <div class="sidebar-heading">
+          <a class="navbar-brand" href="/index">
+              EdgeX Foundry
+          </a>
+      </div>
       <div class="list-group list-group-flush">
-    
+   
          {% for post in post_title %}
             <a href="/post/{{post.id}}" class="list-group-item list-group-item-action bg-light">{{post.title}}</a>
      
@@ -41,8 +45,6 @@
     <div id="page-content-wrapper">
 
       <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-        <button class="btn btn-primary" id="menu-toggle">Toggle Menu</button>
-
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
