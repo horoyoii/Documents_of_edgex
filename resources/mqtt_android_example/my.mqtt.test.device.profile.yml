@@ -1,0 +1,91 @@
+# mqtt.test.device.profile.yml
+name: "My.Android.Test.Device.MQTT.Profile"
+manufacturer: "Horoyoii"
+model: "Android MQTT-DEVICE"
+description: "My Test Android device profile"
+labels:
+  - "mqtt"
+  - "test"
+  - "Android"
+deviceResources:
+  -
+    name: message
+    description: "device message"
+    properties:
+      value:
+        { type: "String", size: "0", readWrite: "W" ,scale: "", offset: "", base: ""  }
+      units:
+        { type: "String", readWrite: "R", defaultValue: "" }
+  -   
+    name: onoff
+    description: "device Switch On/Off"
+    properties:
+      value:
+        { type: "String", size: "0", readWrite: "W", scale: "", offset: "", base: "" }
+      units:
+        { type: "String", readWrite: "R", defaultValue: "" }
+
+deviceCommands:
+  -
+    name: testmessage
+    get:
+    - { index: "1", operation: "get", object: "message", parameter: "message" }
+    set:
+    - { index: "1", operation: "set", object: "message", parameter: "message" }
+  -
+    name: testonoff
+    get:
+    - { index: "1", operation: "get", object: "onoff", parameter: "onoff" }
+    set:
+    - { index: "1", operation: "set", object: "onoff", parameter: "onoff" }
+coreCommands:
+  -
+    name: testmessage
+    get:
+      path: "/api/v1/device/{deviceId}/testmessage"
+      responses:
+      -   
+        code: "200"
+        description: "get the message"
+        expectedValues: ["message"]      -
+        code: "503"
+        description: "service unavailable"
+        expectedValues: []
+    put:
+      path: "/api/v1/device/{deviceId}/testmessage"
+      parameterNames: ["message"]
+      responses:
+      -
+        code: "204"
+        description: "set the message."
+        expectedValues: []
+      -
+        code: "503"
+        description: "service unavailable"
+        expectedValues: []
+  -
+    name: testonoff
+    get:
+      path: "/api/v1/device/{deviceId}/onoff"
+      responses:
+      -
+        code: "200"
+        description: "get the onofff of switch"
+        expectedValues: ["onoff"]
+      -
+        code: "503"
+        description: "service unavailable"
+        expectedValues: []
+    put:
+      path: "/api/v1/device/{deviceId}/onoff"
+      parameterNames: ["onoff"]
+      responses:
+      -
+        code: "204"
+        description: "set the onoff of switch."
+        expectedValues: []
+      -
+        code: "503"
+        description: "service unavailable"
+        expectedValues: []
+
