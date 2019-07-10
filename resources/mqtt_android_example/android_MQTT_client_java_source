@@ -1,0 +1,186 @@
+package com.example.myapplication;
+
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+
+import org.eclipse.paho.android.service.MqttAndroidClient;
+import org.eclipse.paho.client.mqttv3.DisconnectedBufferOptions;
+import org.eclipse.paho.client.mqttv3.IMqttActionListener;
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.IMqttToken;
+import org.eclipse.paho.client.mqttv3.MqttCallback;
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.json.JSONObject;
+
+public class MainActivity extends AppCompatActivity {
+    private MqttAndroidClient mqttAndroidClient;
+    private Button button, button_string_send, bnt_check;
+    final private String TAG = "HOHO";
+    private String device_message;
+    private String device_on_off;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        button = (Button) findViewById(R.id.button);
+        button_string_send = findViewById(R.id.button2);
+        bnt_check = findViewById(R.id.btn_check);
+
+        bnt_check.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "Device MSG IS " + device_message);
+            }
+        });
+
+
+        device_message = "default hello world!";
+        mqttAndroidClient = new MqttAndroidClient(this, "tcp://" + "115.145.226.243" + ":1883", MqttClient.generateClientId());
+        // 2번째 파라메터 : 브로커의 ip 주소 , 3번째 파라메터 : client 의 id를 지정함 여기서는 paho 의 자동으로 id를 만들어주는것
+        try {
+            IMqttToken token = mqttAndroidClient.connect(getMqttConnectionOption());    //mqtttoken 이라는것을 만들어 connect option을 달아줌
+            token.setActionCallback(new IMqttActionListener() {
+                @Override
+                public void onSuccess(IMqttToken asyncActionToken) {
+                    mqttAndroidClient.setBufferOpts(getDisconnectedBufferOptions());    //연결에 성공한경우
+                    Log.e(TAG, "Connection Success");
+                    try {
+                        mqttAndroidClient.subscribe("DataTopic", 0);   //연결에 성공하면 jmlee 라는 토픽으로 subscribe함
+                        mqttAndroidClient.subscribe("CommandTopic", 0);
+
+                    } catch (MqttException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {   //연결에 실패한경우
+                    Log.e(TAG, "Connection Failure " + exception.toString());
+                }
+            });
+        } catch (
+                MqttException e) {
+            e.printStackTrace();
+        }
+        /*
+         *   subscribe 할때 3번째 파라메터에 익명함수 리스너를 달아줄수도있음
+         * */
+        /*try {
+            mqttAndroidClient.subscribe("jmlee!!", 0, new IMqttMessageListener() {
+                @Override
+                public void messageArrived(String topic, MqttMessage message) throws Exception {
+
+                }
+            });
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }*/
+
+        button_string_send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Log.e(TAG, "Send Message");
+
+                    // {.. . .. .. . } 와 같은 format의 json을 그대로 보내야 edgex가 알아먹는다...
+                    mqttAndroidClient.publish("ResponseTopic", "hello , my name is jmlee !".getBytes(), 0, false);
+                } catch (MqttException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    Log.e(TAG, "Send Message");
+                    mqttAndroidClient.publish("DataTopic", "hello , my name is jmlee !".getBytes(), 0, false);
+                    //버튼을 클릭하면 jmlee 라는 토픽으로 메시지를 보냄
+                } catch (MqttException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+
+        mqttAndroidClient.setCallback(new MqttCallback() {  //클라이언트의 콜백을 처리하는부분
+            @Override
+            public void connectionLost(Throwable cause) {
+            }
+
+            @Override
+            public void messageArrived(String topic, MqttMessage message) throws Exception {    //모든 메시지가 올때 Callback method
+                Log.d(TAG, "message Arrivced");
+                Log.d(TAG, "receive topid : " + topic);
+                Log.d(TAG, "Receive msg : " + message);
+
+                // Parsing이 필요하다....
+                if (topic.equals("DataTopic")) {     //topic 별로 분기처리하여 작업을 수행할수도있음
+                    String msg = new String(message.getPayload());
+                    Log.e(TAG, "message Arrived : " + msg);
+                }
+
+                if (topic.equals("CommandTopic")) {
+                    JSONObject obj = new JSONObject(message.toString());
+                    if (((String) obj.get("method")).equals("get")) {
+                        Log.d(TAG, "method is \"GET\"");
+                        try {
+                            Log.e(TAG, "Send Message");
+                            obj.put("message", device_message);
+                            mqttAndroidClient.publish("ResponseTopic", obj.toString().getBytes(), 0, false);
+
+                            //버튼을 클릭하면 jmlee 라는 토픽으로 메시지를 보냄
+                        } catch (MqttException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if (((String) obj.get("method")).equals("set")) {
+                        Log.d(TAG, "method is \"SET\"");
+                        device_message = obj.get("message").toString();
+                        Log.d(TAG, "device message is set");
+                        try {
+                            Log.e(TAG, "Send Message");
+                            mqttAndroidClient.publish("ResponseTopic", obj.toString().getBytes(), 0, false);
+
+                            //버튼을 클릭하면 jmlee 라는 토픽으로 메시지를 보냄
+                        } catch (MqttException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void deliveryComplete(IMqttDeliveryToken token) {
+
+            }
+        });
+    }
+
+    private DisconnectedBufferOptions getDisconnectedBufferOptions() {
+        DisconnectedBufferOptions disconnectedBufferOptions = new DisconnectedBufferOptions();
+        disconnectedBufferOptions.setBufferEnabled(true);
+        disconnectedBufferOptions.setBufferSize(100);
+        disconnectedBufferOptions.setPersistBuffer(true);
+        disconnectedBufferOptions.setDeleteOldestMessages(false);
+        return disconnectedBufferOptions;
+    }
+
+
+
+    private MqttConnectOptions getMqttConnectionOption() {
+        MqttConnectOptions mqttConnectOptions = new MqttConnectOptions();
+        mqttConnectOptions.setCleanSession(false);
+        mqttConnectOptions.setAutomaticReconnect(true);
+        mqttConnectOptions.setWill("aaa", "I am going offline".getBytes(), 1, true);
+        return mqttConnectOptions;
+    }
+}
