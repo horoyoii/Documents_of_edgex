@@ -6,4 +6,4 @@ class CreatePost(forms.ModelForm):
     class Meta:
         model = Post
  
-        fields = ['title', 'slug', 'content'] 
+        fields = ['number','title', 'slug', 'content'] 

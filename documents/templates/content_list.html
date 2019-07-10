@@ -32,7 +32,7 @@
       <div class="list-group list-group-flush">
    
          {% for post in post_title %}
-            <a href="/post/{{post.id}}" class="list-group-item list-group-item-action bg-light">{{post.title}}</a>
+            <a href="/post/{{post.id}}" class="list-group-item list-group-item-action bg-light">{{post.number}}  {{post.title}}</a>
      
 
          {% endfor %}
@@ -75,13 +75,15 @@
 
     <!-- -->
   
+     <form style="display: inline">
+          <input class="MyButton" type="button" value="Post" onclick="window.location.href='/create'">
+     </form>
   
     <div style="padding: 50px">
     <h1>List of  </h1>
     {% for post in post_title  %}
         <div>
-            <a href= "/post/{{post.id}}">{{post.title}}</a>
-            <p>{{post.id}}</p>
+            <a href= "/post/{{post.id}}">{{post.number}}  {{post.title}}</a>
         </div>
 
     {% endfor %}

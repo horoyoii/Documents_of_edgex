@@ -34,7 +34,7 @@
 
         
         {% for post in post_all %}
-              <a href="/post/{{post.id}}" class="list-group-item list-group-it    em-action bg-light">{{post.title}}</a>
+              <a href="/post/{{post.id}}" class="list-group-item list-group-it    em-action bg-light">{{post.number}}{{post.title}}</a>
 
         {% endfor %}
 
@@ -73,6 +73,16 @@
         </div>
       </nav>
 
+    <span class= "btnSet">
+        <form style="display: inline">
+            <input class="MyButton" type="button" value="edit" onclick="window.location.href='/edit/{{post.id}}'">
+        </form>
+        
+        <form style="display: inline">
+            <input class="MyButton" type="button" value="delete" onclick="window.location.href='/delete/{{post.id}}'">
+        </form>
+
+    </span>
 
     <!-- -->
     <div style="padding:50px">
