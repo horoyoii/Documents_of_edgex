@@ -6,7 +6,7 @@
         <!-- Required meta tags -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>Lambda - Free Bootstrap 4 Multipurpose Landing Page Template</title>
+        <title>EdgeX Foundry Document for Korean</title>
         <meta name="description" content="Lambda is a beautiful Bootstrap 4 template for multipurpose landing pages." /> 
 
         <!--Google fonts-->
@@ -38,7 +38,7 @@
                         <a class="nav-link page-scroll" href="#faq">About</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link page-scroll" href="#Contact">Contact</a>
+                        <a class="nav-link page-scroll" href="#Contact">Daily Report</a>
                     </li>
                 </ul>
                 <form class="form-inline">
@@ -67,7 +67,7 @@
                 <div class="row">
                     <div class="col-md-6 mx-auto text-center">
                         <span class="text-muted text-uppercase">Answers to common questions</span>
-                        <h2 class="display-4">Frequently asked questions</h2>
+                        <h2 class="display-4">About</h2>
                         <p class="lead">
                             Nam liber tempor cum eleifend option congue nihil imper. Nam liber tempor cum soluta nobis.
                         </p>                    
@@ -134,23 +134,41 @@
         </section>
 
 
-        <!-- Connect section -->
+        <!-- Daily Report section -->
         <section class="py-7 bg-light" id="Contact">
             <div class="container">
                 <div class="row">
                     <div class="col-md-6 mx-auto text-center">
                         <span class="text-muted text-uppercase">Answers to common questions</span>
-                        <h2 class="display-4">Frequently asked questions</h2>
+                        <h2 class="display-4">Daily Report</h2>
                         <p class="lead">
                             Nam liber tempor cum eleifend option congue nihil imper. Nam liber tempor cum soluta nobis.
                         </p>                    
                     </div>
                 </div>
 
-                {% for done in done_list %}
-                    {{done.pubdate}}
-                    <h4>{{done.title}}</h4>
+            <!-- add new daily report-->
+            <span class= "btnSet">
+                <form style="display: inline">
+                    <input class="MyButton" type="button" value="ADD new Report" onclick="window.location.href='/create/done'">
+                </form>
+            </span>
+            <p></p>
 
+                {% for done in done_list %}
+                   {{done.pub_date}}
+                    <h4>{{done.title}}</h4>
+                     <span class= "btnSet">
+                         <form style="display: inline">
+                             <input class="MyButton" type="button" value="edit" onclick="window.location.href='/edit/done/{{done.id}}'">
+                         </form>
+
+                         <form style="display: inline">
+                             <input class="MyButton" type="button" value="delete" onclick="window.location.href='/delete/done/{{done.id}}'">
+                         </form>
+                        
+                     </span>
+                    <p></p>
                 {% endfor %}
             </div>
         </section>        <!--hero header-->
