@@ -16,3 +16,19 @@ class Post(models.Model):
 
     def __str__(self):
         return '%s' % self.title
+
+
+class Done(models.Model):
+    pub_date = models.CharField(max_length=40)
+    title = models.CharField(max_length=200)
+
+    def save(self):
+        super(Done, self).save()
+
+    def __str__(self):
+        return '%s' % self.title
+
+
+
+
+

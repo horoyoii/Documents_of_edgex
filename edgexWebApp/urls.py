@@ -31,11 +31,15 @@ urlpatterns = [
     path('index/', index, name='index'),
     path('create/', createPost, name='create'),
     path('ckeditor/', include('ckeditor_uploader.urls')),
-    path('post/<int:pk>', content_main, name='show'),
     path('content_list', content_list, name='content_list'),
+    path('post/<int:pk>', content_main, name='show'), 
     path('edit/<int:pk>', content_edit, name='content_edit'),
     path('delete/<int:pk>', content_delete, name='content_delete'),
+    path('create/done', createDone, name='createDone'),
 
+    path('edit/done/<int:pk>', done_edit, name='done_edit'),
+    path('delete/done/<int:pk>', done_delete, name='done_delete'),
+    
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
