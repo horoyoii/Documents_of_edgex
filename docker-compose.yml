@@ -27,6 +27,15 @@ services:
       - MYSQL_USER=django_app
       - MYSQL_PASSWORD=12345
 
+#  elasticsearch:
+#    image: docker.elastic.co/elasticsearch/elasticsearch:7.2.0
+#    ports:
+#      - "9200:9200"
+#      - "9300:9300"
+
+
+
+
 #  nginx:
 #    image: nginx:latest
 #    ports:

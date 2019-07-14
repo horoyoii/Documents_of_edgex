@@ -1,0 +1,81 @@
+[Service]
+Host = "edgex-device-modbus"
+Port = 49991
+ConnectRetries = 3
+Labels = ["modbus"]
+OpenMsg = "device modbus started"
+Timeout = 5000
+EnableAsyncReadings = true
+AsyncBufferSize = 16
+
+[Registry]
+Host = "edgex-core-consul"
+Port = 8500
+CheckInterval = "10s"
+FailLimit = 3
+FailWaitTime = 10
+Type = "consul"
+
+[Clients]
+  [Clients.Data]
+  Name = "edgex-core-data"
+  Protocol = "http"
+  Host = "edgex-core-data"
+  Port = 48080
+  Timeout = 50000
+
+  [Clients.Metadata]
+  Name = "edgex-core-metadata"
+  Protocol = "http"
+  Host = "edgex-core-metadata"
+  Port = 48081
+  Timeout = 50000
+
+  [Clients.Logging]
+  Name = "edgex-support-logging"
+  Protocol = "http"
+  Host = "edgex-support-logging"
+  Port = 48061
+
+[Writable]
+LogLevel = "INFO"
+
+[Logging]
+EnableRemote = false
+File = "./device-modbus.log"
+
+[Device]
+  DataTransform = true
+  InitCmd = ""
+  InitCmdArgs = ""
+  MaxCmdOps = 128
+  MaxCmdValueLen = 256
+  RemoveCmd = ""
+  RemoveCmdArgs = ""
+  ProfilesDir = "/custom-config"
+
+# Pre-define Devices
+[[DeviceList]]
+  Name = "Modbus-TCP-Device"
+  Profile = "Network Power Meter"
+  Description = "This device is a product for monitoring and controlling digital inputs and outputs over a LAN."
+  labels = [ "Air conditioner","modbus TCP" ]
+  [DeviceList.Protocols]
+    [DeviceList.Protocols.modbus-tcp]
+       Address = "115.145.241.17"
+       Port = "502"
+       UnitID = "1"
+
+
+#[[DeviceList]]
+#  Name = "Modbus-RTU-Device"
+#  Profile = "Network Power Meter"
+#  Description = "This device is a product for monitoring and controlling digital inputs and outputs over a LAN."
+#  labels = [ "Air conditioner","modbus RTU" ]
+#  [DeviceList.Protocols]
+#    [DeviceList.Protocols.modbus-rtu]
+#       Address = "/tmp/slave"
+#       BaudRate = "19200"
+#       DataBits = "8"
+#       StopBits = "1"
+#       Parity = "N"
