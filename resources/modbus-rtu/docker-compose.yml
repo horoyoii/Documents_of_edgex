@@ -1,0 +1,24 @@
+  # example 
+  device-modbus:
+    image: edgexfoundry/docker-device-modbus-go:1.0.0
+    ports:
+    - "49991:49991"
+    container_name: edgex-device-modbus
+    hostname: edgex-device-modbus
+    networks:
+    - edgex-network
+    volumes:
+    - db-data:/data/db
+    - log-data:/edgex/logs
+    - consul-config:/consul/config
+    - consul-data:/consul/data
+    - ./modbus:/custom-config
+    depends_on:
+    - data
+    - command
+    entrypoint:
+    - /device-modbus
+    - --registry=consul://edgex-core-consul:8500
+    - --confdir=/custom-config
+    devices:
+    - "/dev/ttyUSB1:/dev/ttyUSB1"
