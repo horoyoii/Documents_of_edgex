@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import *
 from .models import *
+import copy
 # Create your views here.
 
 
@@ -48,11 +49,32 @@ def index(request):
 
 def content_list(request):
     #post_title = Post.objects.values_list('title', 'id')
-    post_title = Post.objects.all().order_by('number') 
-    print(post_title)
+    
+    posts = Post.objects.all().order_by('number') 
+    liss = {}
+    sub =[]
+    flag= False
+    key_str = ""
+    for p in posts:
+        if p.number.count('.') == 1 and flag:
+            liss[key_str] = sub
+            sub=[]
+            key_str = p.number+" "+p.title
+            #sub.append(p)
+        else:
+            sub.append(p)
 
+        if not flag:
+            sub=[]
+            key_str = p.number+" "+p.title
+            flag=True
+    liss[key_str]=sub
+    
+    tag = ['abc', 'bcd', 'kkk','acc']
 
-    return render(request, 'content_list.html', {'post_title':post_title})
+    ab=zip(tag, liss.items())
+
+    return render(request, 'content_list.html', {'posts':posts, 'liss':ab})
 
 def content_main(request, pk):
     post_all = Post.objects.all().order_by('number')

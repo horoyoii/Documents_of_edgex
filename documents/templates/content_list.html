@@ -14,7 +14,12 @@
   <!-- Bootstrap core CSS -->
   <link href='{% static "contents/vendor/bootstrap/css/bootstrap.min.css" %}' rel="stylesheet">
   <!-- Custom styles for this template -->
-  <link href='{% static "contents/css/simple-sidebar.css" %}' rel="stylesheet">
+ <!-- <link href='{% static "contents/css/simple-sidebar.css" %}' rel="stylesheet"> -->
+  <link href='{% static "contents/css/style.css" %}' rel="stylesheet">
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
 
 </head>
 
@@ -23,6 +28,7 @@
   <div class="d-flex" id="wrapper">
 
     <!-- Sidebar -->
+<!--
     <div class="bg-light border-right" id="sidebar-wrapper">
       <div class="sidebar-heading">
           <a class="navbar-brand" href="/index">
@@ -31,7 +37,7 @@
       </div>
       <div class="list-group list-group-flush">
    
-         {% for post in post_title %}
+         {% for post in posts %}
             <a href="/post/{{post.id}}" class="list-group-item list-group-item-action bg-light">{{post.number}}  {{post.title}}</a>
      
 
@@ -39,7 +45,42 @@
 
       </div>
     </div>
-    <!-- /#sidebar-wrapper -->
+-->
+    <nav id="sidebar">
+        <div class="sidebar-header">
+            <a href="/index">EdgeX Foundry</a>
+        </div>
+        <ul class="list-unstyled components">
+        <li class="active">
+            
+            {%for tag, values in liss %}
+               <a href="#{{tag}}" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">{{values.0}}</a>
+                 <ul class="collapse list-unstyled" id="{{tag}}">
+                 
+                 {%for list in values.1 %}    
+                    <li>
+                        <a href="/post/{{list.id}}">{{list.number}}{{list.title}}</a>
+                    </li>
+                  {%endfor%}  
+                </ul>
+                {{foorloop.counter}}
+            {%endfor%}
+                          
+           
+        </li>
+        </ul>
+
+    </nav>
+<!--
+    {% for ll in liss  %}
+        <div>
+          {% for lll in ll %}
+            {{lll}}
+          {%endfor%}
+        </div>
+
+    {% endfor %}
+-->    <!-- /#sidebar-wrapper -->
 
     <!-- Page Content -->
     <div id="page-content-wrapper">
@@ -81,12 +122,15 @@
   
     <div style="padding: 50px">
     <h1>List of  </h1>
-    {% for post in post_title  %}
+    {% for post in posts  %}
         <div>
             <a href= "/post/{{post.id}}">{{post.number}}  {{post.title}}</a>
         </div>
 
     {% endfor %}
+
+
+    
 
     </div>
 
@@ -109,6 +153,22 @@
       $("#wrapper").toggleClass("toggled");
     });
   </script>
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+    <script>
+        $(document).ready(function(){
+            $('#sidebarCollapse').on('click',function(){
+                $('#sidebar').toggleClass('active');
+            });
+        });
+    </script>
+
 
 </body>
 
