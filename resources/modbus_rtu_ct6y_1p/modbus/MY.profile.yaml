@@ -1,0 +1,97 @@
+# DENT.Mod.PS6037.profile.yaml
+name: "TEST RTU Profile"
+manufacturer: "Autonics"
+model: "CT6Y-1P"
+description: "rtu Power Scout Meter"
+labels:
+  - "modbus"
+  - "powerscout"
+deviceResources:
+    -   
+        name: "PresentValue"
+        description: "Present Value in the Device"
+        attributes:
+            { primaryTable: "INPUT_REGISTERS", startingAddress: "1004" }
+        properties:
+            value:
+                { type: "UINT16", readWrite: "R", scale: "1", minimum: "0", maximum: "65535", defaultValue: "0"}
+            units:
+                { type: "String", readWrite: "R", defaultValue: "min"}
+    -   
+        name: "Reset"
+        description: "Reset present value in the device"
+        attributes:
+            { primaryTable: "HOLDING_REGISTERS", startingAddress: "59" }
+        properties:
+            value:
+                { type: "UINT16", readWrite: "R", scale: "1", minimum: "0", maximum: "65535", defaultValue: "0"}
+            units:
+                { type: "String", readWrite: "R", defaultValue: "min"}
+               
+deviceCommands:
+    -
+        name: "PresentValueGet"
+        set:
+            - { index: "1", operation: "set", object: "PresentValue", parameter: "PresentValue" }
+        get:
+            - { index: "1", operation: "get", object: "PresentValue", parameter:  "PresentValue" }
+    -   
+        name: "ResetValue"
+        set:
+            - { index: "1", operation: "set", object: "Reset", parameter: "Reset" } 
+        get:
+            - { index: "1", operation: "get", object: "Reset", parameter:  "Reset" }
+
+coreCommands:
+    -
+        name: "PresentValueGet"
+        get:
+            path: "/api/v1/device/{deviceId}/PresentValueGet"
+            responses:
+                -
+                    code: "200"
+                    description: "Get the Configuration"
+                    expectedValues: ["PresentValue"]
+                -
+                    code: "503"
+                    description: "service u
+  #       aliases:navailable"
+                    expectedValues: []
+        put:
+            path: "/api/v1/device/{deviceId}/PresentValueGet"
+            parameterNames: ["PresentValue"]
+            responses:
+                -
+                    code: "204"
+                    description: "Set the Configuration"
+                    expectedValues: []
+                -
+                    code: "503"
+                    description: "service ununavailable"
+                    expectedValues: []
+    -
+        name: "ResetValue"
+        get:
+            path: "/api/v1/device/{deviceId}/ResetValue"
+            responses:
+                -
+                    code: "200"
+                    description: "Get the Configuration"
+                    expectedValues: ["Reset"]
+                -
+                    code: "503"
+                    description: "service unavailable"
+                    expectedValues: []
+        put:
+            path: "/api/v1/device/{deviceId}/ResetValue"
+            parameterNames: ["Reset"]
+            responses:
+                -
+                    code: "204"
+                    description: "Set the Configuration"
+                    expectedValues: []
+                -
+                    code: "503"
+                    description: "service ununavailable"
+                    expectedValues: []
+
