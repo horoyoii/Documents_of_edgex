@@ -3,5 +3,5 @@ mysqlclient
 gunicorn==19.9.0
 django-ckeditor
 pillow
-
+graphene_django
 

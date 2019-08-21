@@ -22,6 +22,9 @@ from django.conf.urls.static import static
 from django.conf.urls import include
 
 # ... the rest of your URLconf goes here ...
+from graphene_django.views import GraphQLView
+from django.views.decorators.csrf import csrf_exempt
+
 
 
 urlpatterns = [
@@ -40,6 +43,8 @@ urlpatterns = [
     path('edit/done/<int:pk>', done_edit, name='done_edit'),
     path('delete/done/<int:pk>', done_delete, name='done_delete'),
     
+    path('graphql', csrf_exempt(GraphQLView.as_view(graphiql=True))),
+
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

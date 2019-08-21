@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     
     'ckeditor',
     'ckeditor_uploader',
+    'graphene_django',
 
 ]
 
@@ -147,4 +148,9 @@ CKEDITOR_CONFIGS = {
     'default': {
         'toolbar': None,
     },
+}
+
+
+GRAPHENE = {
+    'SCHEMA': 'edgexWebApp.schema.schema'
 }

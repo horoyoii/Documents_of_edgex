@@ -150,26 +150,39 @@
             <!-- add new daily report-->
             <span class= "btnSet">
                 <form style="display: inline">
-                    <input class="MyButton" type="button" value="ADD new Report" onclick="window.location.href='/create/done'">
+                    <input c
+lass="MyButton" type="button" value="ADD new Report" onclick="window.location.href='/create/done'">
                 </form>
             </span>
             <p></p>
 
+           
                 {% for done in done_list %}
                    {{done.pub_date}}
                     <h4>{{done.title}}</h4>
+
                      <span class= "btnSet">
                          <form style="display: inline">
                              <input class="MyButton" type="button" value="edit" onclick="window.location.href='/edit/done/{{done.id}}'">
                          </form>
-
                          <form style="display: inline">
                              <input class="MyButton" type="button" value="delete" onclick="window.location.href='/delete/done/{{done.id}}'">
                          </form>
-                        
                      </span>
+
                     <p></p>
+
+
                 {% endfor %}
+           
+
+
+           <br><br><br>
+           <h3>Test For GraphQL</h3>
+           <div id="done_list">
+
+           <div>
+           
             </div>
         </section>        <!--hero header-->
         
@@ -242,6 +255,8 @@
 
 
 
+
+
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
@@ -249,5 +264,67 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.7.0/feather.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
         <script src='{% static "documents/js/scripts.js" %}'></script>
+
+        <script>
+      
+            function loadResult(res){
+                alert("Hell");
+
+            }
+       
+            function getDoneList(){
+                const query=`
+                    query {
+                          allDones{ 
+                              id
+                              title
+                              pubDate
+                          }
+                      }`;      
+                
+                const url = "/graphql";
+                
+                const opts = {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({ query}),
+                };
+
+
+                fetch(url, opts)
+                    .then(function(response){
+                        return response.json();
+                    })
+                    .then(function(myJson){
+                        var doc = document.getElementById("done_list");                             
+                        $.each(myJson["data"]["allDones"], function(key, value){
+                            //console.log(value["title"]);
+                            
+                            var pub_date = document.createTextNode(value["pubDate"]);
+                            doc.appendChild(pub_date);
+                            
+                            
+                            var node = document.createElement("h4");
+                            var text = document.createTextNode(value["title"]);
+                            node.appendChild(text);
+                            doc.appendChild(node);                                                    
+                        
+                        
+                        });
+
+                    });
+
+            }
+
+    
+            window.onload = function(){
+                getDoneList();
+            }   
+
+
+
+
+        </script>
+
     </body>
 </html>
