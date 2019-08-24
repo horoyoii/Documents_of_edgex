@@ -48,33 +48,11 @@ def index(request):
 
 
 def content_list(request):
-    #post_title = Post.objects.values_list('title', 'id')
-    
-    posts = Post.objects.all().order_by('number') 
-    liss = {}
-    sub =[]
-    flag= False
-    key_str = ""
-    for p in posts:
-        if p.number.count('.') == 1 and flag:
-            liss[key_str] = sub
-            sub=[]
-            key_str = p.number+" "+p.title
-            #sub.append(p)
-        else:
-            sub.append(p)
+    return render(request, 'content_list_ver2.html')
 
-        if not flag:
-            sub=[]
-            key_str = p.number+" "+p.title
-            flag=True
-    liss[key_str]=sub
-    
-    tag = ['abc', 'bcd', 'kkk','acc']
 
-    ab=zip(tag, liss.items())
 
-    return render(request, 'content_list.html', {'posts':posts, 'liss':ab})
+
 
 def content_main(request, pk):
     post_all = Post.objects.all().order_by('number')
@@ -82,6 +60,9 @@ def content_main(request, pk):
     print(post_all)
     print(post)
     return render(request, 'content_main.html', {'post':post, 'post_all': post_all})
+
+
+
 
 def createDone(request):
     if request.method == "POST":
@@ -94,6 +75,9 @@ def createDone(request):
         form = CreateDone()
     return render(request, 'createPost.html', {'form': form})
 
+
+
+
 def done_edit(request, pk):
     item = get_object_or_404(Done, id=pk)
     form = CreateDone(request.POST or None, instance=item)
@@ -101,6 +85,8 @@ def done_edit(request, pk):
         form.save()
         return redirect('/index')
     return render(request, 'createPost.html', {'form': form})
+
+
 
 
 def done_delete(request, pk):

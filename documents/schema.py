@@ -11,11 +11,16 @@ class DoneType(DjangoObjectType):
         model = Done
 
 
+class PostType(DjangoObjectType):
+    class Meta:
+        model = Post
+
+
 class Query(object):
     done = graphene.Field(DoneType, id=graphene.Int(), title=graphene.String(), pubDate=graphene.String())
     
     all_dones = graphene.List(DoneType)
-
+    all_posts = graphene.List(PostType)
     
     def resolve_done(self, info, **kwargs):
         id = kwargs.get('id')
@@ -31,5 +36,7 @@ class Query(object):
 
     
     def resolve_all_dones(self, info, **kwargs):
-        print("Resolver called")
         return Done.objects.all()
+
+    def resolve_all_posts(self, info, **kwargs):
+        return Post.objects.all().order_by('number')
