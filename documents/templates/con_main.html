@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+
+{% block content %}
+    <span class= "btnSet">
+        <form style="display: inline">
+            <input class="MyButton" type="button" value="edit" onclick="window.location.href='/edit/{{post.id}}'">
+        </form>
+        
+        <form style="display: inline">
+            <input class="MyButton" type="button" value="delete" onclick="window.location.href='/delete/{{post.id}}'">
+        </form>
+
+    </span>
+
+    <div style="padding:50px">
+            <h1>{{post.number}} {{post.title}}</h1>
+            <br>
+            {{post.content | safe}}
+    
+    </div>
+
+    <div id="contents_list"></div>
+    <p id="con_main"> </p>
+{% endblock %}
+
+
+{% block scripts %}
+
+<script src='{% static "contents/js/custom_script.js" %}'> </script>
+
+{% endblock %}

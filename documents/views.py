@@ -48,7 +48,7 @@ def index(request):
 
 
 def content_list(request):
-    return render(request, 'content_list_ver2.html')
+    return render(request, 'con_list.html')
 
 
 
@@ -59,7 +59,7 @@ def content_main(request, pk):
     post = Post.objects.get(id=pk)
     print(post_all)
     print(post)
-    return render(request, 'content_main.html', {'post':post, 'post_all': post_all})
+    return render(request, 'con_main.html', {'post':post, 'post_all': post_all})
 
 
 

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block content %}
+    <form style="display: inline">
+        <input class="MyButton" type="button" value="Post" onclick="window.location.href='/create'">
+   </form>
+    
+   <div id="contents_list"></div>
+{% endblock%}
+
+
+
+{% block scripts %}
+
+    <script src='{% static "contents/js/custom_script.js" %}'> </script>
+
+{% endblock %}
+

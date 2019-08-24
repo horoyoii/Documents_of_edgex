@@ -89,31 +89,17 @@ function getPostList(){
 
 
             });
-            sidebar_list.appendChild(main_li);
 
+            sidebar_list.appendChild(main_li);
+            if(document.getElementById("con_main") != null){
+                con_list.innerHTML="";
+            }
         });
 
 }
 
-/* <ul class="list-unstyled components">
-                
-<li class="active">
-    <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Home</a>
-    <ul class="collapse list-unstyled" id="homeSubmenu">
-        <li>
-            <a href="#">Home 1</a>
-        </li>
-        <li>
-            <a href="#">Home 2</a>
-        </li>
-        <li>
-            <a href="#">Home 3</a>
-        </li>
-    </ul> */
 
 window.onload = function(){
     getPostList();
 }   
 
-
-//<a href= "/post/{{post.id}}">{{post.number}}  {{post.title}}</a>
