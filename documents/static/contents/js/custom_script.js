@@ -40,6 +40,7 @@ function getPostList(){
 
             $.each(myJson["data"]["allPosts"], function(key, value){
 
+                console.log(value['title']);
               
                 // Make List in Main contents =============================
                 var node = document.createElement("a");
@@ -80,7 +81,6 @@ function getPostList(){
                     a_node.setAttribute("href", "/post/"+value["id"]);
                     a_node.appendChild(document.createTextNode(value["number"]+" "+value["title"]));
                     node.appendChild(a_node);
-
 
                     document.getElementById(value["slug"]).appendChild(node);
 
