@@ -1,5 +1,5 @@
 # example.device.profile.yml
-name: "device_one"
+name: "mock_device_type_A"
 manufacturer: "Dent Instruments"
 model: "PS3037"
 description: "just has humidity and temperature."
